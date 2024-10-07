@@ -1,7 +1,7 @@
 const { getTask } = require('../controllers/task.controller')
 
 const { Router } = require("express");
-const pool = require('../pg');
+
 
 const router = Router();
 
