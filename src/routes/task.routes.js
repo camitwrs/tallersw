@@ -5,6 +5,9 @@ const { Router } = require("express");
 const router = Router();
 
 router.get('/preguntas', getPreguntas)
+router.get('/preguntas/:categoria', getPreguntasPorCategoria);
+
+
 
 router.post('/taskcrear', (req, res) => {
     res.send("Creando lista de tareas");
@@ -16,6 +19,6 @@ router.put('/taskactalizar', (req, res) => {
     res.send("Actualizar lista de tareas");
 })
 
-router.get('/preguntas/:categoria', getPreguntasPorCategoria);
+
 
 module.exports = router;

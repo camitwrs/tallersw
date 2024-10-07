@@ -37,7 +37,17 @@ const getPreguntasPorCategoria = async (req, res) => {
 };
 
 
+
+
+
+
+
+
+
+
+
 module.exports = {
     getPreguntas,
     getPreguntasPorCategoria
+
 }
