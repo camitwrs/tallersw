@@ -12,14 +12,14 @@ export default function SeccionD() {
 
       <button
         onClick={() => setStep(4)}
-        className="w-full bg-red-900 text-white py-2 rounded-full hover:bg-red-700 text-sm"
+        className="w-full bg-red-700 text-white py-2 rounded-full hover:bg-red-500 text-sm"
       >
         Atrás
       </button>
       <span></span>
       <button
         onClick={submitData}
-        className="w-full bg-blue-900 text-white py-2 rounded-full hover:bg-custom-blue text-sm"
+        className="w-full bg-cyan-600 text-white py-2 rounded-full hover:bg-cyan-400 text-sm"
       >
         Enviar
       </button>

@@ -30,11 +30,11 @@ export default function SeccionDatos() {
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row max-w-5xl mx-auto p-8 bg-white shadow-md rounded-2xl">
+    <div className="flex flex-col lg:flex-row max-w-5xl mx-auto mb-4 p-8 bg-white shadow-md rounded-2xl">
       <div className="flex-1 mb-4 lg:mb-0 lg:mr-4">
         {preguntas.length > 0 ? (
           <>
-            <h2 className="text-xl font-bold mb-4 text-center">
+            <h2 className="text-2xl font-bold mb-4 text-center text-cyan-600">
               DATOS PERSONALES
             </h2>
             {preguntas.map((pregunta) => (
@@ -56,6 +56,7 @@ export default function SeccionDatos() {
                       .replace(/\s+/g, "")
                       .toLowerCase()}
                     name="nombrecompleto"
+                    placeholder="Escriba su nombre completo"
                     className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                     required
                     value={userData["nombrecompleto"]}
@@ -99,6 +100,7 @@ export default function SeccionDatos() {
                       .replace(/\s+/g, "")
                       .toLowerCase()}
                     name="edad"
+                    placeholder="Ingrese su edad"
                     className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                     required
                     value={userData["edad"] || ""}
@@ -193,6 +195,7 @@ export default function SeccionDatos() {
                       .replace(/\s+/g, "")
                       .toLowerCase()}
                     name="aniosexperiencia"
+                    placeholder="Ingrese los años de experiencia"
                     className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                     required
                     value={userData["aniosexperiencia"] || ""}
@@ -230,7 +233,7 @@ export default function SeccionDatos() {
                   );
                 }
               }}
-              className="w-full bg-blue-900 text-white py-2 rounded-full hover:bg-blue-700 text-sm"
+              className="w-full bg-cyan-800 text-white py-2 rounded-full hover:bg-cyan-600 text-sm"
             >
               Siguiente
             </button>

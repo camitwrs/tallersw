@@ -41,7 +41,11 @@ const CuestionarioPage = () => {
 
       {/* Stepper */}
       <div className="flex justify-center mb-2 w-full overflow-x-auto px-4 z-10 mt-16">
-        <Stepper activeStep={currentStep - 1} orientation="horizontal">
+        <Stepper
+          className="custom-stepper"
+          activeStep={currentStep - 1}
+          orientation="horizontal"
+        >
           <Step>
             <StepLabel>Información inicial</StepLabel>
           </Step>
@@ -60,7 +64,7 @@ const CuestionarioPage = () => {
         </Stepper>
       </div>
 
-      <div className="flex-grow w-full flex items-center justify-center p-0">
+      <div className="flex-grow w-full flex items-center justify-center mb-4 p-0">
         {showSection(currentStep)}
       </div>
     </div>
