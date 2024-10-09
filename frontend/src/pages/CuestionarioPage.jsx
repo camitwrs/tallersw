@@ -1,63 +1,68 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Lista_de_Preguntas from "../components/ListarPreguntas";
-import Lista_de_DatosPersonales from "../components/ListatDatosPersonales";
-import Lista_de_PreguntasA4 from "../components/ListarPreguntasA4";
+import SeccionDatos from "../components/SeccionDatos";
+import SeccionA from "./../components/SeccionA";
+import SeccionB from "./../components/SeccionB";
+import SeccionC from "./../components/SeccionC";
+import SeccionD from "./../components/SeccionD";
+import { Stepper, StepLabel, Step } from "@mui/material";
+import { SeccionContext } from "../context/FormContext";
 
 const CuestionarioPage = () => {
-  // Definir la clave que quieres pasar (puede ser dinámica o estática)
+  const { currentStep } = useContext(SeccionContext);
 
-  function tablaD() {
-    const filas = []; // Arreglo para almacenar los componentes
-
-    for (let i = 0; i < 24 - 7 + 1; i++) {
-      const clave = `D${i + 7}`; // Generar la clave D7, D8, ..., D24
-      filas.push(<Lista_de_Preguntas key={clave} clave={clave} />); // Agregar el componente al arreglo
+  function showSection(step) {
+    switch (step) {
+      case 1:
+        return <SeccionDatos />;
+      case 2:
+        return <SeccionA />;
+      case 3:
+        return <SeccionB />;
+      case 4:
+        return <SeccionC />;
+      case 5:
+        return <SeccionD />;
+      default:
+        return null;
     }
-
-    return <div>{filas}</div>; // Retornar un contenedor con todos los componentes
   }
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <Link to="/">
-        <button className="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Volver a Inicio
-        </button>
-      </Link>
-      <h1 className="text-3xl font-bold mb-4">Cuestionario</h1>
-      {/* Muestra la lista de preguntas y pasa la clave como prop */}
-      <Lista_de_DatosPersonales />
-      <br></br>
-      <Lista_de_Preguntas clave={"A2"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"A3"} />
-      <br></br>
-      <Lista_de_PreguntasA4 clave={"A4"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"B1"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"B2"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"B3"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"B4"} />
-      {/* <br></br>
-      <Lista_de_Preguntas clave={"B5"} /> */}
-      <br></br>
-      <Lista_de_Preguntas clave={"D1"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"D2"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"D3"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"D4"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"D5"} />
-      <br></br>
-      <Lista_de_Preguntas clave={"D6"} />
-      <br></br>
-      {tablaD()}
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Botón Volver a Inicio */}
+      <div className="absolute top-4 left-4 z-20">
+        <Link to="/">
+          <button className="bg-custom-blue rounded-full hover:bg-blue-900 text-white font-bold text-sm py-1 px-3 sm:py-2 sm:px-4">
+            Volver a Inicio
+          </button>
+        </Link>
+      </div>
+
+      {/* Stepper */}
+      <div className="flex justify-center mb-2 w-full overflow-x-auto px-4 z-10 mt-16">
+        <Stepper activeStep={currentStep - 1} orientation="horizontal">
+          <Step>
+            <StepLabel>Información inicial</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Sección A</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Sección B</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Sección C</StepLabel>
+          </Step>
+          <Step>
+            <StepLabel>Sección D</StepLabel>
+          </Step>
+        </Stepper>
+      </div>
+
+      <div className="flex-grow w-full flex items-center justify-center p-0">
+        {showSection(currentStep)}
+      </div>
     </div>
   );
 };

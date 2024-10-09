@@ -22,7 +22,7 @@ const HomePage = () => {
             </p>
             <Link
               to="/cuestionario"
-              className="bg-p-Blue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:bg-blue-800 transition-colors"
+              className="bg-custom-blue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:bg-blue-900 transition-colors"
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>

@@ -4,14 +4,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Poppins', 'sans-serif']
+        sans: ["Poppins", "sans-serif"],
       },
       colors: {
-        'p-Blue': '#082340',
-        'p-White': '#f4f4f4',
-        'p-Gray': '#505152',
-        'p-l-Gray': '#dadada'
-      }
+        "custom-blue": "#082340",
+        "custom-white": "#f4f4f4",
+        "custom-gray": "#505152",
+        "custom-lightgray": "#dadada",
+      },
     },
   },
   plugins: [],
