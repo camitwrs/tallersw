@@ -78,11 +78,11 @@ export default function SeccionA() {
   return (
     <div className="flex flex-col lg:flex-row max-w-5xl mx-auto p-4 bg-white shadow-md rounded-2xl">
       <div className="flex-1 mb-4 lg:mb-0 lg:mr-4">
-        <h1 className="text-2xl font-bold mb-4 text-center text-cyan-600">
+        <h1 className="text-2xl font-bold mb-4 text-center text-custom-blue">
           ITEM A: CARACTERIZACIÓN GENERAL
         </h1>
 
-        <hr className="border-t-2 border-cyan-500 mb-4" />
+        <hr className="border-t-2 border-gray-200 mb-4" />
 
         {Object.entries(agrupadasPorPregunta).map(
           ([idPregunta, { textoPregunta, alternativas }]) => (
@@ -93,7 +93,7 @@ export default function SeccionA() {
                   tu quehacer laboral?
                 </h1>
               )}
-              <h1 className="text-lg font-semibold mb-4 text-left">
+              <h1 className="text-lg font-semibold mb-4 text-left ">
                 {textoPregunta}
               </h1>
 

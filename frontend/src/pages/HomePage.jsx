@@ -22,7 +22,7 @@ const HomePage = () => {
             </p>
             <Link
               to="/cuestionario"
-              className="bg-custom-blue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:bg-blue-900 transition-colors"
+              className="bg-custom-blue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:bg-cyan-600 transition-colors"
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>
@@ -32,7 +32,7 @@ const HomePage = () => {
             <img
               src={nutria_nobg}
               alt="Mamífero Marino"
-              className="w-64 sm:w-80 lg:w-96 xl:w-[36rem] h-auto"
+              className="w-64 sm:w-80 lg:w-96 xl:w-[28rem] h-auto"
             />
           </div>
         </div>

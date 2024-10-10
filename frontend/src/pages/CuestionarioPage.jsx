@@ -7,6 +7,7 @@ import SeccionC from "./../components/SeccionC";
 import SeccionD from "./../components/SeccionD";
 import { Stepper, StepLabel, Step } from "@mui/material";
 import { SeccionContext } from "../context/FormContext";
+import fondo from "../assets/sea.jpg";
 
 const CuestionarioPage = () => {
   const { currentStep } = useContext(SeccionContext);
@@ -29,11 +30,14 @@ const CuestionarioPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div
+      className={`flex flex-col min-h-screen bg-cover bg-center`}
+      style={{ backgroundImage: `url(${fondo})` }}
+    >
       {/* Botón Volver a Inicio */}
       <div className="absolute top-4 left-4 z-20">
         <Link to="/">
-          <button className="bg-custom-blue rounded-full hover:bg-blue-900 text-white font-bold text-sm py-1 px-3 sm:py-2 sm:px-4">
+          <button className="bg-custom-blue rounded-full hover:bg-cyan-600 text-white font-bold text-base py-1 px-3 sm:py-2 sm:px-4">
             Volver a Inicio
           </button>
         </Link>
@@ -64,7 +68,9 @@ const CuestionarioPage = () => {
         </Stepper>
       </div>
 
-      <div className="flex-grow w-full flex items-center justify-center mb-4 p-0">
+      <div className="flex-grow w-full flex items-center justify-center mb-4 p-4 sm:p-0">
+        {" "}
+        {/* Ajuste de padding */}
         {showSection(currentStep)}
       </div>
     </div>

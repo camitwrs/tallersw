@@ -36,7 +36,36 @@ const getPreguntasPorCategoria = async (req, res) => {
   }
 };
 
+const getPreguntasPorId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT * FROM pregunta WHERE "idPregunta" = $1`,
+      [id]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener preguntas:", error);
+    res.status(500).json({ error: "Error al obtener las preguntas" });
+  }
+};
+
+const getPreguntasD5 = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT * FROM pregunta WHERE "idPregunta" >44 and "idPregunta" <64  `
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al obtener preguntas:", error);
+    res.status(500).json({ error: "Error al obtener las preguntas" });
+  }
+};
+
 module.exports = {
   getPreguntas,
   getPreguntasPorCategoria,
+  getPreguntasPorId,
+  getPreguntasD5,
 };
