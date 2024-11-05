@@ -2,11 +2,21 @@ const pool = require("../pg");
 
 const getPreguntas = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM pregunta");
+    const result = await pool.query("SELECT * FROM preguntas");
     res.json(result.rows); // Aquí se devuelve solo los datos obtenidos de la consulta
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al obtener las preguntas" });
+  }
+};
+
+const getAlternativas = async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM alternativas");
+    res.json(result.rows); // Aquí se devuelve solo los datos obtenidos de la consulta
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener las alternativas" });
   }
 };
 
@@ -20,9 +30,9 @@ const getPreguntasPorCategoria = async (req, res) => {
                 a."idAlternativa",
                 a."textoAlternativa"
             FROM
-                pregunta p
+                preguntas p
             JOIN
-                alternativa a
+                alternativas a
             ON
                 p."idPregunta" = a."idPregunta"
             WHERE
@@ -40,21 +50,8 @@ const getPreguntasPorId = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      `SELECT * FROM pregunta WHERE "idPregunta" = $1`,
+      `SELECT * FROM preguntas WHERE "idPregunta" = $1`,
       [id]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error("Error al obtener preguntas:", error);
-    res.status(500).json({ error: "Error al obtener las preguntas" });
-  }
-};
-
-const getPreguntasD5 = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const result = await pool.query(
-      `SELECT * FROM pregunta WHERE "idPregunta" >44 and "idPregunta" <64  `
     );
     res.json(result.rows);
   } catch (error) {
@@ -77,11 +74,10 @@ const getPreguntasPorItem = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getPreguntas,
+  getAlternativas,
   getPreguntasPorCategoria,
   getPreguntasPorId,
-  getPreguntasD5,
   getPreguntasPorItem,
 };

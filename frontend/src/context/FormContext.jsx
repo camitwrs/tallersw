@@ -1,33 +1,32 @@
 import React, { useState, createContext, useEffect } from "react";
 
 // Crea el contexto fuera del componente
-export const SeccionContext = createContext();
+export const FormContext = createContext();
 
-const FormContext = ({ children }) => {
-  // Acepta 'children' como props
-  const [currentStep, setStep] = useState(1);
-  const [userData, setUserData] = useState([]);
+const FormProvider = ({ children }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [userData, setUserData] = useState({});
   const [finalData, setFinalData] = useState([]);
 
   function submitData() {
-    setFinalData((finalData) => [...finalData, userData]);
-    setUserData("");
-    setStep(1);
+    setFinalData((prevFinalData) => [...prevFinalData, userData]);
+    setUserData({});
+    setCurrentQuestionIndex(0);
   }
 
   useEffect(() => {
     console.log("userData actualizado:", userData);
-  }, [userData]); // Esto se ejecutará cada vez que userData cambie DEBUGGER
+  }, [userData]);
 
   useEffect(() => {
     console.log("finalData actualizado:", finalData);
-  }, [finalData]); // Esto se ejecutará cada vez que finalData cambie DEBUGGER
+  }, [finalData]);
 
   return (
-    <SeccionContext.Provider
+    <FormContext.Provider
       value={{
-        currentStep,
-        setStep,
+        currentQuestionIndex,
+        setCurrentQuestionIndex,
         userData,
         setUserData,
         finalData,
@@ -36,8 +35,8 @@ const FormContext = ({ children }) => {
       }}
     >
       {children}
-    </SeccionContext.Provider>
+    </FormContext.Provider>
   );
 };
 
-export default FormContext;
+export default FormProvider;

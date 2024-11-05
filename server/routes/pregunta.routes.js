@@ -1,8 +1,8 @@
 const {
   getPreguntas,
+  getAlternativas,
   getPreguntasPorCategoria,
   getPreguntasPorId,
-  getPreguntasD5,
   getPreguntasPorItem,
 } = require("../controllers/pregunta.controller");
 
@@ -13,7 +13,8 @@ const router = Router();
 router.get("/preguntas", getPreguntas);
 router.get("/preguntas/:categoria", getPreguntasPorCategoria);
 router.get("/preguntas_id/:id", getPreguntasPorId);
-router.get("/preguntasD5", getPreguntasD5);
+
+router.get("/alternativas", getAlternativas);
 
 // Corrección en la ruta para preguntas por item
 router.get("/preguntasporitem/:item", getPreguntasPorItem);
