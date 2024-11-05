@@ -34,19 +34,21 @@ const CuestionarioPage = () => {
         );
         const dataAlternativas = await responseAlternativas.json();
 
-        setPreguntas(dataPreguntas);
-
-        // Agrupar alternativas por idPregunta para un acceso rápido
+        // Verificar que cada alternativa tenga un idPregunta y agruparlas
         const alternativasPorPregunta = dataAlternativas.reduce(
           (acc, alternativa) => {
-            const { idPregunta } = alternativa;
-            if (!acc[idPregunta]) acc[idPregunta] = [];
-            acc[idPregunta].push(alternativa);
+            const idPregunta = alternativa.idPregunta; // Verificar el campo exacto que se está utilizando
+            if (idPregunta) {
+              // Asegurarse de que idPregunta está definido
+              if (!acc[idPregunta]) acc[idPregunta] = [];
+              acc[idPregunta].push(alternativa);
+            }
             return acc;
           },
           {}
         );
 
+        setPreguntas(dataPreguntas);
         setAlternativas(alternativasPorPregunta);
       } catch (error) {
         console.error("Error al cargar las preguntas y alternativas:", error);
@@ -84,17 +86,34 @@ const CuestionarioPage = () => {
   };
 
   const handleCheckboxChange = (e) => {
-    const updatedSelections =
-      userData[preguntas[currentQuestionIndex].idPregunta] || [];
+    const idPregunta = preguntas[currentQuestionIndex].idPregunta;
+    const updatedSelections = userData[idPregunta] || [];
+
+    // Limitar la selección a 2 para la pregunta 8
+    if (idPregunta === 8 && updatedSelections.length >= 2 && e.target.checked) {
+      return; // No permite seleccionar más de 2 opciones
+    }
+
     if (e.target.checked) {
       updatedSelections.push(e.target.value);
     } else {
       const index = updatedSelections.indexOf(e.target.value);
       if (index > -1) updatedSelections.splice(index, 1);
     }
+
     setUserData({
       ...userData,
-      [preguntas[currentQuestionIndex].idPregunta]: updatedSelections,
+      [idPregunta]: updatedSelections,
+    });
+  };
+
+  const handleRangeChange = (e, idPregunta) => {
+    const value = e.target.value;
+    const opciones = alternativas[idPregunta] || [];
+    const selectedOption = opciones[value];
+    setUserData({
+      ...userData,
+      [idPregunta]: selectedOption ? selectedOption.textoAlternativa : "",
     });
   };
 
@@ -107,7 +126,18 @@ const CuestionarioPage = () => {
     const pregunta = preguntas[currentQuestionIndex];
     if (!pregunta) return null;
 
-    const opciones = alternativas[pregunta.idPregunta] || [];
+    const opciones = (alternativas[pregunta.idPregunta] || []).sort((a, b) => {
+      const textoA = a.textoAlternativa || ""; // Si es null, asignar una cadena vacía
+      const textoB = b.textoAlternativa || "";
+      const isNumeric =
+        !isNaN(parseFloat(textoA)) && !isNaN(parseFloat(textoB));
+
+      if (isNumeric) {
+        return parseFloat(textoA) - parseFloat(textoB);
+      } else {
+        return textoA.localeCompare(textoB);
+      }
+    });
 
     switch (pregunta.tipo) {
       case "text":
@@ -118,6 +148,7 @@ const CuestionarioPage = () => {
             value={userData[pregunta.idPregunta] || ""}
             onChange={handleInputChange}
             placeholder="Escribe tu respuesta"
+            maxLength="200" // Limitar a 200 caracteres
           />
         );
 
@@ -154,6 +185,50 @@ const CuestionarioPage = () => {
           </label>
         ));
 
+      case "select":
+        return (
+          <select
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+            value={userData[pregunta.idPregunta] || ""}
+            onChange={handleInputChange}
+          >
+            <option value="" disabled hidden>
+              Seleccione una opción
+            </option>
+            {opciones.map((opcion, index) => (
+              <option key={index} value={opcion.textoAlternativa}>
+                {opcion.textoAlternativa}
+              </option>
+            ))}
+          </select>
+        );
+
+      case "range":
+        return (
+          <div className="flex flex-col items-center">
+            <input
+              type="range"
+              min="0"
+              max={opciones.length - 1}
+              step="1"
+              value={userData[pregunta.idPregunta] || 0}
+              onChange={(e) => {
+                const selectedIndex = e.target.value;
+                handleRangeChange(e, pregunta.idPregunta);
+                setUserData({
+                  ...userData,
+                  [pregunta.idPregunta]: parseInt(selectedIndex),
+                });
+              }}
+              className="w-full"
+            />
+            <div className="mt-2 text-sm text-gray-700">
+              {opciones[userData[pregunta.idPregunta]]?.textoAlternativa ||
+                "Mueva el deslizador para mostrar las opciones"}
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -183,7 +258,7 @@ const CuestionarioPage = () => {
             local.He sido informado(a) de que se puede hacer preguntas sobre la
             investigación en cualquier momento y que es posible el retractar mi
             decisión al respecto, sin tener que dar explicaciones ni sufrir
-            consecuencia alguna por tal decisión.De tener preguntas, reclamos o
+            consecuencia alguna por tal decisión. De tener preguntas, reclamos o
             comentarios sobre la participación en este proyecto, contactar al
             equipo responsable Pablo Zamora (pablo.zamora@pucv.cl) y Patricia
             Ibáñez (patricia.iban@gmail.com).
