@@ -81,6 +81,27 @@ const CuestionarioPage = () => {
     cargarPreguntasYAlternativas();
   }, []);
 
+  // Este efecto se activa cada vez que cambia la pregunta actual
+  useEffect(() => {
+    const pregunta = preguntas[currentQuestionIndex];
+    if (pregunta && pregunta.tipo === "range") {
+      const idPregunta = pregunta.idPregunta;
+      const opciones = alternativas[idPregunta];
+
+      if (opciones && opciones.length > 0) {
+        const primeraOpcionId = opciones[0].idAlternativa;
+
+        // Si aún no hay valor para esta pregunta en userData, almacena la primera opción
+        if (!userData[idPregunta]) {
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            [idPregunta]: primeraOpcionId,
+          }));
+        }
+      }
+    }
+  }, [currentQuestionIndex, preguntas, alternativas, userData, setUserData]);
+
   const handleStartQuiz = () => {
     if (aceptaTerminos) {
       setIsQuizStarted(true);
@@ -149,7 +170,6 @@ const CuestionarioPage = () => {
     // Limpiar mensajes de error
     if (submitError) setSubmitError("");
   };
-
   // Manejar cambios en inputs de tipo range
   const handleRangeChange = (e, idPregunta) => {
     const selectedIndex = parseInt(e.target.value, 10);
@@ -193,7 +213,7 @@ const CuestionarioPage = () => {
   const handleSendQuiz = async () => {
     setIsSubmitting(true);
     try {
-      await submitData(); // Asumiendo que submitData retorna una promesa
+      submitData(); // Asumiendo que submitData retorna una promesa
       setSubmitSuccess(true);
       setSubmitError("");
     } catch (error) {
@@ -226,7 +246,7 @@ const CuestionarioPage = () => {
 
     return (
       <div className="w-full transition-opacity duration-300 ease-in-out">
-        <h2 className="text-xl text-center sm:text-2xl font-semibold mb-4 text-teal-700">
+        <h2 className="text-xl text-center sm:text-2xl font-semibold mb-4 text-Moonstone">
           {pregunta.textoPregunta}
         </h2>
 
@@ -428,7 +448,7 @@ const CuestionarioPage = () => {
                 if (startQuizError) setStartQuizError("");
                 if (submitError) setSubmitError("");
               }}
-              placeholder={`Ingresa un número entre ${MIN_NUMBER} y ${MAX_NUMBER}`}
+              placeholder={`Ingresa un número`}
               min={MIN_NUMBER}
               max={MAX_NUMBER}
               step={1}
@@ -461,11 +481,10 @@ const CuestionarioPage = () => {
   const hasError = !!checkboxError || !!numberError || !!submitError;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 p-4">
-      {/* Header */}
+    <div className="flex flex-col w-screen h-screen bg-pulpo-pattern bg-YankeesBlue bg-cover bg-center bg-no-repeat p-0">
       <div className="flex justify-start mb-4">
         <Link to="/">
-          <button className="bg-teal-600 rounded-full hover:bg-teal-500 text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105">
+          <button className="bg-Moonstone rounded-full text-white font-semibold py-2 m-1 px-6 sm:py-3 sm:px-8 shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105">
             Volver a Inicio
           </button>
         </Link>
@@ -485,7 +504,7 @@ const CuestionarioPage = () => {
           <>
             {!isQuizStarted ? (
               <div className="flex flex-col items-center justify-center bg-white p-6 sm:p-8 shadow-xl rounded-xl max-w-md sm:max-w-lg md:max-w-xl w-full transition-opacity duration-500 ease-in-out">
-                <h3 className="font-bold text-xl sm:text-2xl text-center mb-4 text-teal-700">
+                <h3 className="font-bold text-xl sm:text-2xl text-center mb-4 text-Moonstone">
                   Términos y Condiciones
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm text-center mb-4">
@@ -524,7 +543,7 @@ const CuestionarioPage = () => {
                 </label>
                 <button
                   onClick={handleStartQuiz}
-                  className="bg-teal-700 rounded-full text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 hover:bg-teal-600 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
+                  className="bg-Moonstone rounded-full text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
                 >
                   Iniciar Cuestionario
                 </button>
@@ -539,11 +558,6 @@ const CuestionarioPage = () => {
                     <p className="text-gray-700 text-sm sm:text-base">
                       Hemos recibido tus respuestas correctamente.
                     </p>
-                    <Link to="/">
-                      <button className="mt-4 rounded-full bg-teal-600 text-white font-semibold py-2 px-6 sm:py-3 sm:px-8 hover:bg-teal-500 transition-transform duration-200 ease-in-out transform hover:scale-105">
-                        Volver a Inicio
-                      </button>
-                    </Link>
                   </div>
                 ) : (
                   <>
@@ -566,10 +580,10 @@ const CuestionarioPage = () => {
                         <button
                           onClick={handleNextQuestion}
                           disabled={hasError}
-                          className={`bg-teal-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-full transition-transform duration-200 ease-in-out transform ${
+                          className={`bg-Moonstone text-white py-2 px-4 sm:py-3 sm:px-6 rounded-full transition-transform duration-200 ease-in-out transform ${
                             hasError
-                              ? "bg-teal-300 cursor-not-allowed"
-                              : "hover:bg-teal-600 hover:scale-105"
+                              ? "bg-Moonstone cursor-not-allowed"
+                              : "hover:bg-Moonstone hover:scale-105"
                           }`}
                         >
                           Siguiente
@@ -597,8 +611,8 @@ const CuestionarioPage = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-4">
-        <p className="text-xs text-center sm:text-sm text-gray-500">
+      <div className="mt-4 px-4 bg-Moonstone">
+        <p className="text-xs text-center sm:text-sm text-white p-2 rounded">
           La duración del cuestionario es de 20 minutos aproximadamente.
         </p>
       </div>

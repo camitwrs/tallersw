@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <nav className="bg-custom-blue h-24 flex items-center justify-center">
+      <nav className="bg-YankeesBlue h-24 flex items-center justify-center">
         <div className="text-white text-5xl font-bold">MENTES SALVAJES</div>
       </nav>
 
@@ -22,7 +22,7 @@ const HomePage = () => {
             </p>
             <Link
               to="/cuestionario"
-              className="bg-custom-blue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:bg-teal-600 transition-colors"
+              className="bg-YankeesBlue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:scale-105"
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>
@@ -38,8 +38,8 @@ const HomePage = () => {
         </div>
       </main>
 
-      <footer className="bg-custom-lightgray py-4 text-center">
-        <p className="text-black text-sm">
+      <footer className="bg-custom-lightgray py-1 text-center">
+        <p className="text-gray-500 text-sm">
           © 2024 SAUKKOTECH TODOS LOS DERECHOS RESERVADOS.
         </p>
       </footer>

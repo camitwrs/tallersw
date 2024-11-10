@@ -7,10 +7,13 @@ export default {
         sans: ["NUD Std", "sans-serif"],
       },
       colors: {
-        "custom-blue": "#115e59",
-        "custom-white": "#f4f4f4",
-        "custom-gray": "#505152",
-        "custom-lightgray": "#dadada",
+        CadmiumOrange: "#eb8933",
+        MaximumYellow: "#f4b841",
+        YankeesBlue: "#103045",
+        Moonstone: "#4b9bb8",
+      },
+      backgroundImage: {
+        "pulpo-pattern": "url('./src/assets/pattern pulpo.svg')",
       },
     },
   },
