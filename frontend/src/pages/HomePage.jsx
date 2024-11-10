@@ -1,6 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import nutria_nobg from "../assets/nutria_nobg.png";
 
 import { Link } from "react-router-dom";
@@ -8,7 +6,9 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <nav className="bg-custom-blue h-24 flex items-center justify-center">
+        <div className="text-white text-5xl font-bold">MENTES SALVAJES</div>
+      </nav>
 
       <main className="flex-grow bg-white flex justify-center items-center">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between lg:px-12">
@@ -38,7 +38,11 @@ const HomePage = () => {
         </div>
       </main>
 
-      <Footer />
+      <footer className="bg-custom-lightgray py-4 text-center">
+        <p className="text-black text-sm">
+          © 2024 SAUKKOTECH TODOS LOS DERECHOS RESERVADOS.
+        </p>
+      </footer>
     </div>
   );
 };
