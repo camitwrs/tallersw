@@ -4,6 +4,7 @@ const {
   getPreguntasPorCategoria,
   getPreguntasPorId,
   getPreguntasPorItem,
+  getUniversidades
 } = require("../controllers/pregunta.controller");
 
 const { Router } = require("express");
@@ -13,6 +14,7 @@ const router = Router();
 router.get("/preguntas", getPreguntas);
 router.get("/preguntas/:categoria", getPreguntasPorCategoria);
 router.get("/preguntas_id/:id", getPreguntasPorId);
+router.get("/uni", getUniversidades);
 
 router.get("/alternativas", getAlternativas);
 

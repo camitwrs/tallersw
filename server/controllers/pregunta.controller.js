@@ -74,10 +74,30 @@ const getPreguntasPorItem = async (req, res) => {
   }
 };
 
+const getUniversidades = async (req, res) => {
+  try {
+    // Consulta a la API externa
+    const response = await fetch(`http://universities.hipolabs.com/search?`);
+    if (!response.ok) {
+      throw new Error('Error al consultar la API de universidades');
+    }
+
+    const universidades = await response.json(); // Parsear los datos de la respuesta
+    res.json(universidades); // Enviar los datos al cliente
+  } catch (error) {
+    console.error("Error al obtener universidades:", error);
+    res.status(500).json({ error: "Error al obtener las universidades" });
+  }
+};
+
+
+
+
 module.exports = {
   getPreguntas,
   getAlternativas,
   getPreguntasPorCategoria,
   getPreguntasPorId,
   getPreguntasPorItem,
+  getUniversidades
 };

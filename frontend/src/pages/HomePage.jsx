@@ -26,6 +26,14 @@ const HomePage = () => {
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>
+
+            <br></br>
+            <Link
+              to="/pruebas"
+              className="bg-YankeesBlue text-white px-6 py-3 sm:px-8 sm:py-4 lg:px-10 lg:py-5 rounded-full text-base sm:text-lg lg:text-xl inline-block hover:scale-105"
+            >
+              &gt;&gt; Pruebas
+            </Link>
           </div>
 
           <div className="mt-8 lg:mt-0">

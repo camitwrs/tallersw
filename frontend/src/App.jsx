@@ -4,12 +4,14 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CuestionarioPage from "./pages/CuestionarioPage";
 import FormContext from "./context/FormContext"; // Asegúrate de la ruta correcta
+import Pruebas from "./pages/Pruebas";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} /> {/* Ruta por defecto */}
+        <Route path="/pruebas" element={<Pruebas />} /> {/* Ruta por defecto */}
         <Route
           path="/cuestionario"
           element={
