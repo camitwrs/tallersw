@@ -4,7 +4,8 @@ const {
   getPreguntasPorCategoria,
   getPreguntasPorId,
   getPreguntasPorItem,
-  getUniversidades
+  getUniversidades,
+  postPersona
 } = require("../controllers/pregunta.controller");
 
 const { Router } = require("express");
@@ -20,10 +21,13 @@ router.get("/alternativas", getAlternativas);
 
 // Corrección en la ruta para preguntas por item
 router.get("/preguntasporitem/:item", getPreguntasPorItem);
-
+//-------------------------------------------------------------------
 router.post("/preguntacrear", (req, res) => {
   res.send("Creando preguntas");
 });
+router.post("/agregarPersona", postPersona);
+
+
 router.delete("/preguntaeliminar", (req, res) => {
   res.send("Eliminando preguntas");
 });

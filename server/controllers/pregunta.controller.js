@@ -90,6 +90,36 @@ const getUniversidades = async (req, res) => {
   }
 };
 
+const postPersona = async (req, res) => {
+  try {
+    // Extrae los datos del cuerpo de la solicitud
+    const { nombrepersona, correo, contrasena, rol } = req.body;
+
+    // Validación básica
+    if (!nombrepersona || !correo || !contrasena || !rol) {
+      return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+
+    // Consulta SQL de inserción
+    const query = `
+      INSERT INTO public.persona (nombrepersona, correo, contrasena, rol)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
+
+    // Ejecuta la consulta
+    const result = await pool.query(query, [nombrepersona, correo, contrasena, rol]);
+
+    // Devuelve la respuesta con los datos insertados
+    return res.status(201).json({
+      message: 'Persona creada exitosamente.',
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error('Error al insertar persona:', error);
+    return res.status(500).json({ error: 'Error del servidor.' });
+  }
+};
 
 
 
@@ -99,5 +129,6 @@ module.exports = {
   getPreguntasPorCategoria,
   getPreguntasPorId,
   getPreguntasPorItem,
-  getUniversidades
+  getUniversidades,
+  postPersona
 };
