@@ -597,7 +597,7 @@ const CuestionarioPage = () => {
     <div className="flex flex-col w-screen h-screen bg-pulpo-pattern bg-YankeesBlue bg-cover bg-center bg-no-repeat p-0">
       <div className="flex justify-start mb-4">
         <Link to="/">
-          <button className="bg-Moonstone rounded-full text-white font-semibold py-2 m-1 px-6 sm:py-3 sm:px-8 shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105">
+          <button className="bg-Moonstone rounded-md text-white font-semibold py-2 m-1 px-6 sm:py-3 sm:px-8 shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105">
             Volver a Inicio
           </button>
         </Link>
@@ -656,7 +656,7 @@ const CuestionarioPage = () => {
                 </label>
                 <button
                   onClick={handleStartQuiz}
-                  className="bg-Moonstone rounded-full text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
+                  className="bg-Moonstone rounded-md text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
                 >
                   Iniciar Cuestionario
                 </button>
@@ -710,7 +710,7 @@ const CuestionarioPage = () => {
                           </div>
 
                           <button
-                            className="absolute top-2 right-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-full shadow-md hover:bg-red-700 transition duration-200 ease-in-out"
+                            className="absolute top-2 right-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow-md hover:bg-red-700 transition duration-200 ease-in-out"
                             onClick={toggleModal}
                           >
                             ✕
@@ -727,7 +727,7 @@ const CuestionarioPage = () => {
                       <button
                         onClick={handlePrevQuestion}
                         disabled={currentQuestionIndex === 0}
-                        className={`bg-gray-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-full transition-opacity duration-200 ease-in-out ${
+                        className={`bg-gray-700 text-white py-2 px-4 sm:py-3 sm:px-6 rounded-md transition-opacity duration-200 ease-in-out ${
                           currentQuestionIndex === 0
                             ? "opacity-50 cursor-not-allowed"
                             : "hover:bg-gray-600 hover:scale-105"
@@ -740,7 +740,7 @@ const CuestionarioPage = () => {
                         <button
                           onClick={handleNextQuestion}
                           disabled={hasError}
-                          className={`bg-Moonstone text-white py-2 px-4 sm:py-3 sm:px-6 rounded-full transition-transform duration-200 ease-in-out transform ${
+                          className={`bg-Moonstone text-white py-2 px-4 sm:py-3 sm:px-6 rounded-md transition-transform duration-200 ease-in-out transform ${
                             hasError
                               ? "bg-Moonstone cursor-not-allowed"
                               : "hover:bg-Moonstone hover:scale-105"
@@ -752,7 +752,7 @@ const CuestionarioPage = () => {
                         <button
                           onClick={handleSendQuiz}
                           disabled={isSubmitting || submitSuccess || hasError}
-                          className={`py-2 px-4 sm:py-3 sm:px-6 rounded-full ${
+                          className={`py-2 px-4 sm:py-3 sm:px-6 rounded-md ${
                             isSubmitting || submitSuccess || hasError
                               ? "bg-green-400 cursor-not-allowed"
                               : "bg-green-600 hover:bg-green-500 text-white transition-transform duration-200 ease-in-out transform hover:scale-105"
