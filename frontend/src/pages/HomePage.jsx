@@ -44,6 +44,14 @@ const HomePage = () => {
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>
+
+            <br></br>
+            <Link
+              to="/pruebas"
+              className="bg-YankeesBlue text-white px-4 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 xl:px-10 xl:py-5 rounded-md text-sm sm:text-base lg:text-lg xl:text-xl inline-block hover:scale-105 transition-transform"
+            >
+              &gt;&gt; PRUEBAS
+            </Link>
           </div>
 
           {/* Image Section */}

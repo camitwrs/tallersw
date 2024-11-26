@@ -90,37 +90,228 @@ const getUniversidades = async (req, res) => {
   }
 };
 
-const postPersona = async (req, res) => {
+const crearPersona = async (req, res) => {
   try {
-    // Extrae los datos del cuerpo de la solicitud
-    const { nombrepersona, correo, contrasena, rol } = req.body;
+    // Validar que el cuerpo de la solicitud contiene los datos necesarios
+    const { idpersona, nombrepersona, correo, contrasena, rol } = req.body;
 
-    // Validación básica
-    if (!nombrepersona || !correo || !contrasena || !rol) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    if (!idpersona || !nombrepersona || !correo || !contrasena || !rol) {
+      return res.status(400).json({
+        error: "Todos los campos (idpersona, nombrepersona, correo, contrasena, rol) son obligatorios.",
+      });
     }
 
-    // Consulta SQL de inserción
+    // Consulta a la base de datos
     const query = `
-      INSERT INTO public.persona (nombrepersona, correo, contrasena, rol)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO persona (idpersona, nombrepersona, correo, contrasena, rol)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING *;
     `;
+    const { rows } = await pool.query(query, [idpersona, nombrepersona, correo, contrasena, rol]);
 
-    // Ejecuta la consulta
-    const result = await pool.query(query, [nombrepersona, correo, contrasena, rol]);
-
-    // Devuelve la respuesta con los datos insertados
+    // Respuesta exitosa
     return res.status(201).json({
-      message: 'Persona creada exitosamente.',
-      data: result.rows[0],
+      message: "Persona creada exitosamente.",
+      data: rows[0],
     });
   } catch (error) {
-    console.error('Error al insertar persona:', error);
-    return res.status(500).json({ error: 'Error del servidor.' });
+    console.error("Error al crear persona:", error.message);
+
+    // Manejo de errores específicos
+    if (error.code === '23505') { // Código de error para violación de unicidad
+      return res.status(400).json({ error: "El correo o el idpersona ya está registrado." });
+    }
+
+    // Error genérico
+    return res.status(500).json({ error: "Ocurrió un error al intentar crear la persona." });
   }
 };
 
+const crearEducador = async (req, res) => {
+  try {
+    // Validar que el cuerpo de la solicitud no esté vacío
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "El cuerpo de la solicitud está vacío." });
+    }
+
+    // Extraer los datos del cuerpo
+    const { idpersona, tituloprofesional, intereses, pais, edad, institucion, sexo } = req.body;
+
+    // Validación básica
+    const camposFaltantes = [];
+    if (!idpersona) camposFaltantes.push("idpersona");
+    if (!tituloprofesional) camposFaltantes.push("tituloprofesional");
+    if (!intereses) camposFaltantes.push("intereses");
+    if (!pais) camposFaltantes.push("pais");
+    if (!edad) camposFaltantes.push("edad");
+    if (!institucion) camposFaltantes.push("institucion");
+    if (!sexo) camposFaltantes.push("sexo");
+
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        error: `Faltan los siguientes campos obligatorios: ${camposFaltantes.join(", ")}.`,
+      });
+    }
+
+    // Consulta a la base de datos
+    const query = `
+      INSERT INTO educador (idpersona, tituloprofesional, intereses, pais, edad, institucion, sexo)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *;
+    `;
+    const { rows } = await pool.query(query, [
+      idpersona,
+      tituloprofesional,
+      intereses,
+      pais,
+      edad,
+      institucion,
+      sexo,
+    ]);
+
+    // Respuesta exitosa
+    return res.status(201).json({
+      message: "Educador creado exitosamente.",
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error al crear Educador:", error);
+
+    // Manejo de errores de la base de datos
+    if (error.code === "23503") {
+      return res.status(400).json({ error: "El idpersona proporcionado no existe en la tabla persona." });
+    }
+
+    return res.status(500).json({ error: "Ocurrió un error al intentar crear el Educador." });
+  }
+};
+
+const getCantidadPersonas = async (req, res) => {
+  try {
+    // Realizamos la consulta para obtener la cantidad de filas en la tabla personas
+    const result = await pool.query("SELECT COUNT(*) FROM persona");
+
+    // Enviar la cantidad de filas obtenida
+    res.json({ cantidad: result.rows[0].count }); // El resultado es un objeto con la propiedad count
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener la cantidad de personas" });
+  }
+};
+
+const crearRespuesta = async (req, res) => {
+  try {
+    // Validar que el cuerpo de la solicitud no esté vacío
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "El cuerpo de la solicitud está vacío." });
+    }
+
+    // Extraer los datos del cuerpo
+    const { idpersona, numeroalternativa, resultado, fecha } = req.body;
+
+    // Validación básica
+    const camposFaltantes = [];
+    if (!idpersona) camposFaltantes.push("idpersona");
+    if (!numeroalternativa) camposFaltantes.push("numeroalternativa");
+    if (!resultado) camposFaltantes.push("resultado");
+    if (!fecha) camposFaltantes.push("fecha");
+
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        error: `Faltan los siguientes campos obligatorios: ${camposFaltantes.join(", ")}.`,
+      });
+    }
+
+    // Consulta a la base de datos
+    const query = `
+      INSERT INTO respuesta (idpersona, numeroalternativa, resultado, fecha)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;
+    `;
+    const { rows } = await pool.query(query, [
+      idpersona,
+      numeroalternativa,
+      resultado,
+      fecha,
+    ]);
+
+    // Respuesta exitosa
+    return res.status(201).json({
+      message: "Respuesta creada exitosamente.",
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error al crear Respuesta:", error);
+
+    // Manejo de errores de la base de datos
+    if (error.code === "23503") {
+      return res.status(400).json({ error: "El idpersona proporcionado no existe en la tabla persona." });
+    }
+
+    return res.status(500).json({ error: "Ocurrió un error al intentar crear la Respuesta." });
+  }
+};
+
+const crearIlustracion = async (req, res) => {
+  try {
+    // Validar que el cuerpo de la solicitud no esté vacío
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ error: "El cuerpo de la solicitud está vacío." });
+    }
+
+    // Extraer los datos del cuerpo
+    const { ideducador, iddisenador, prompt, imagen, titulo, fechaentrega, estado } = req.body;
+
+    // Validación básica
+    const camposFaltantes = [];
+    if (!ideducador) camposFaltantes.push("ideducador");
+    if (!iddisenador) camposFaltantes.push("iddisenador");
+    if (!prompt) camposFaltantes.push("prompt");
+    if (!imagen) camposFaltantes.push("imagen");
+    if (!titulo) camposFaltantes.push("titulo");
+    if (!fechaentrega) camposFaltantes.push("fechaentrega");
+    if (!estado) camposFaltantes.push("estado");
+
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        error: `Faltan los siguientes campos obligatorios: ${camposFaltantes.join(", ")}.`,
+      });
+    }
+
+    // Consulta a la base de datos
+    const query = `
+      INSERT INTO ilustracion (ideducador, iddisenador, prompt, imagen, titulo, fechaentrega, estado)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *;
+    `;
+    const { rows } = await pool.query(query, [
+      ideducador,
+      iddisenador,
+      prompt,
+      imagen,
+      titulo,
+      fechaentrega,
+      estado,
+    ]);
+
+    // Respuesta exitosa
+    return res.status(201).json({
+      message: "Ilustración creada exitosamente.",
+      data: rows[0],
+    });
+  } catch (error) {
+    console.error("Error al crear Ilustración:", error);
+
+    // Manejo de errores de la base de datos
+    if (error.code === "23503") {
+      return res.status(400).json({
+        error: "El ideducador o iddisenador proporcionado no existe en las tablas relacionadas.",
+      });
+    }
+
+    return res.status(500).json({ error: "Ocurrió un error al intentar crear la Ilustración." });
+  }
+};
 
 
 module.exports = {
@@ -130,5 +321,9 @@ module.exports = {
   getPreguntasPorId,
   getPreguntasPorItem,
   getUniversidades,
-  postPersona
+  crearPersona,
+  crearEducador,
+  getCantidadPersonas,
+  crearRespuesta,
+  crearIlustracion
 };

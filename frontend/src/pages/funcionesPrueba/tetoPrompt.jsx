@@ -1,12 +1,12 @@
 export const data = [
   {
-    1: "Jan Houter Hube",
-    2: 160,
-    3: 24,
-    4: 227,
-    5: 5,
-    6: 18,
-    7: 8,
+    1: "Jan Houter Hube", //nombre
+    2: 160, //sexo
+    3: 24, //edad
+    4: 228, //pais
+    5: 5, //Institución a la que pertenece
+    6: 18, //Años en el cargo o de experiencia en cargos similares
+    7: 7, // ¿Cuál de las siguientes descripciones describe mejor tu rol o tu función?
     8: [13, 18],
     10: 21,
     11: 23,
@@ -102,7 +102,7 @@ export function textoFinal(resultados, cuadroB4 = "x") {
   const speed = resultados.find((item) => item.clave === "49")?.valor;
   const distance = resultados.find((item) => item.clave === "50")?.valor;
   const morphology = resultados.find((item) => item.clave === "7")?.valor;
-  const color = resultados.find((item) => item.clave === "6")?.valor;
+  const color = resultados.find((item) => item.clave === "8")?.valor;
   const size = resultados.find((item) => item.clave === "20")?.valor;
   const eyes = resultados.find((item) => item.clave === "22")?.valor;
   const habitat1 = resultados.find((item) => item.clave === "10")?.valor;
@@ -139,20 +139,25 @@ export function textoFinal(resultados, cuadroB4 = "x") {
   // Return the original text as a plain string
   const originalText = texto.join("\n");
 
+  function buscargenero() {
+    if (morphology == "Ballenas") return "Cetaceus";
+    if (morphology == "Focas") return "Phocidae";
+    if (morphology == "Tortugas marinas") return "Chelonioidea";
+    if (morphology == "Orcas") return "Orcinus orca";
+    if (morphology == "Pingüinos") return "Spheniscidae";
+    if (morphology == "Nutrias") return "Mustelidae";
+    else return 0;
+  }
+
+  const genero = buscargenero();
   // Create a fantasy-style version of the text
   const fantasyText = `
-    En el reino de ${pais}, un misterioso ser conocido como ${professorName} se alza con un poder ancestral. Su especie, el mítico ${species}, ha dominado las aguas y las profundidades más oscuras, alcanzando las temibles profundidades de ${depth}.
+  ${genero} ${professorName.split(" ")[1]}is ${pais}nsis
 
-    El ${professorName} es conocido por su velocidad extraordinaria, surcando las aguas con la rapidez de ${speed} y recorriendo vastas distancias de ${distance} fuera del agua, como un guerrero sin igual.
-
-    En su forma, se puede ver la morfología única de un ${morphology}, sus rayas o lunares de color ${color} brillan como estrellas en el firmamento. Su tamaño es impresionante, alcanzando la magnitud de ${size}, y sus ojos ${eyes} guardan secretos de mundos perdidos.
-
-    Su hogar está compuesto por varios reinos de naturaleza: ${habitat1}, ${habitat2}, ${habitat3}, ${habitat4}, ${habitat5}, ${habitat6}, ${habitat7}, ${habitat8}, ${habitat9}. Un lugar donde los vientos soplan y las olas cantan.
-
-    En los pergaminos olvidados, se menciona un cuadro sagrado, el legendario Cuadro B.4, cuya información se considera clave en los misterios del reino. ${professorName} es también conocido como el guardián de ese saber oculto.
-
-    Así se relata la historia de ${professorName}, el protector de ${species} y explorador de las profundidades, cuyas aventuras quedan grabadas en la memoria de todos los que habitan en ${pais}.
-    `;
+  ${
+    professorName.split(" ")[0]
+  } es del género ${genero}. Presenta un tamaño de ${size}. Tiene una particular mezcla de ${color} que son rasgos muy característicos de esta especie. Tiene ${eyes}. Destaca la variedad de su hábitat, el cual se forma de ${habitat1}, ${habitat2}, ${habitat3}, ${habitat4}, ${habitat5}, ${habitat6}, ${habitat7}, ${habitat8}, ${habitat9}.
+`;
 
   // Return both versions as an object
   return { originalText, fantasyText };

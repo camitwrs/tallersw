@@ -5,13 +5,17 @@ const {
   getPreguntasPorId,
   getPreguntasPorItem,
   getUniversidades,
-  postPersona
+  crearPersona,
+  crearEducador,
+  getCantidadPersonas,
+  crearRespuesta,
+  crearIlustracion
 } = require("../controllers/pregunta.controller");
 
 const { Router } = require("express");
 
 const router = Router();
-
+router.get("/cantidad_personas", getCantidadPersonas);
 router.get("/preguntas", getPreguntas);
 router.get("/preguntas/:categoria", getPreguntasPorCategoria);
 router.get("/preguntas_id/:id", getPreguntasPorId);
@@ -25,7 +29,10 @@ router.get("/preguntasporitem/:item", getPreguntasPorItem);
 router.post("/preguntacrear", (req, res) => {
   res.send("Creando preguntas");
 });
-router.post("/agregarPersona", postPersona);
+router.post("/crearPersona", crearPersona);
+router.post("/crearEducador", crearEducador);
+router.post("/crearRespuesta", crearRespuesta);
+router.post("/crearIlustracion", crearIlustracion);
 
 
 router.delete("/preguntaeliminar", (req, res) => {

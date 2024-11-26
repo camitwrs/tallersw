@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { FormContext } from "../context/FormContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { textoFinal } from "../context/funcionesCuestionario/crearPrompt";
+import { agregarPersona_educador } from "../context/POST/POSTeducador";
+import { agregarPersona_ } from "../context/POST/POSTpersona";
+import { agregarRespuestaParaProfesor } from "../context/POST/POSTrespuestas";
 
 const CuestionarioPage = () => {
   const {
@@ -13,13 +16,37 @@ const CuestionarioPage = () => {
     submitData,
     finalData,
   } = useContext(FormContext);
-
+  const [statusMessage, setStatusMessage] = useState(""); // Estado para el mensaje de estado
   const [data, setData] = useState([]);
   const [resultados, setResultados] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [textos, setTextos] = useState({ originalText: "", fantasyText: "" });
+  const [filas, setFilas] = useState(0);
+  //--------------------------------------
+  const [preguntas, setPreguntas] = useState([]);
+  const [alternativas, setAlternativas] = useState({});
+  const [aceptaTerminos, setAceptaTerminos] = useState(false);
+  const [isQuizStarted, setIsQuizStarted] = useState(false);
 
-  const [universidadesPorPais, setUniversidadesPorPais] = useState({});
+  // Estados para mensajes de error y éxito
+  const [startQuizError, setStartQuizError] = useState("");
+  const [checkboxError, setCheckboxError] = useState("");
+  const [numberError, setNumberError] = useState(""); // Nuevo estado para errores de número
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  // Estado para manejo de carga y errores de carga
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
+  // Estado para manejo de envío
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Valores constantes para el rango de edades
+  const MIN_NUMBER = 18;
+  const MAX_NUMBER = 80;
+
+  //const [universidadesPorPais, setUniversidadesPorPais] = useState({});
 
   // useEffect(() => {
   //   const fetchUniversidades = async () => {
@@ -75,22 +102,65 @@ const CuestionarioPage = () => {
     if (!isModalOpen) {
       // Solo actualizar data cuando se abre el modal
       setData(finalData);
+      handleAgregarProfesor();
+    }
+  };
+
+  const fetchFilas = async () => {
+    try {
+      const response = await fetch("http://localhost:4000/cantidad_personas");
+
+      if (!response.ok) {
+        throw new Error("Error al obtener la cantidad de filas");
+      }
+
+      const data = await response.json();
+
+      // Asignamos el valor de la cantidad de filas al estado
+      setFilas(data.cantidad);
+    } catch (error) {
+      console.error("Error en fetchFilas:", error);
     }
   };
 
   useEffect(() => {
-    const fetchAlternativas = async () => {
-      try {
-        // Fetch alternativas data
-        const response = await fetch("http://localhost:4000/alternativas");
-        const alternativas = await response.json();
+    fetchFilas();
+  }, [setUserData]);
 
-        // Assuming jsonData is available or fetched from another source
-        const jsonData = data[0]; // Replace with your actual JSON data source if needed
+  const fetchAlternativas = async () => {
+    try {
+      // Fetch alternativas data
+      const response = await fetch("http://localhost:4000/alternativas");
+      const alternativas = await response.json();
 
-        // Iterate through each key-value pair in jsonData
-        const resultadosProcesados = Object.entries(jsonData).map(
-          ([key, value]) => {
+      // Assuming jsonData is available or fetched from another source
+      const jsonData = data[0]; // Replace with your actual JSON data source if needed
+
+      // Iterate through each key-value pair in jsonData
+      const resultadosProcesados = Object.entries(jsonData).map(
+        ([key, value]) => {
+          // Exclude keys 3 and 26
+          if (key === "3" || key === "26") {
+            return { clave: key, valor: value }; // Return the original value for excluded keys
+          }
+
+          if (Array.isArray(value)) {
+            // If the value is an array, process each element
+            const valoresProcesados = value.map((id) => {
+              const alternativa = alternativas.find(
+                (alt) => alt.idAlternativa === id
+              );
+              if (alternativa) {
+                return alternativa.caracteristica === null
+                  ? alternativa.textoAlternativa
+                  : alternativa.caracteristica;
+              }
+              // If no match is found, return the original ID
+              return id;
+            });
+
+            return { clave: key, valor: valoresProcesados }; // Use the processed array as the valor
+          } else {
             // Check if value exists in alternativas as idAlternativa
             const alternativa = alternativas.find(
               (alt) => alt.idAlternativa === value
@@ -105,48 +175,54 @@ const CuestionarioPage = () => {
 
               return { clave: key, valor: valor }; // Use the correct valor
             }
-
             // If no match is found, return the original value
             return { clave: key, valor: value };
           }
-        );
+        }
+      );
 
-        setResultados(resultadosProcesados); // Update the state with processed results
+      setResultados(resultadosProcesados); // Update the state with processed results
 
-        // Generate the texts using textoFinal
-        const generatedTextos = textoFinal(resultados, "IMAGEN");
-        setTextos(generatedTextos);
-      } catch (error) {
-        console.error("Error al obtener alternativas:", error); // Handle errors
-      }
-    };
+      // Generate the texts using textoFinal
+      const generatedTextos = textoFinal(resultadosProcesados);
+      setTextos(generatedTextos);
+    } catch (error) {
+      console.error("Error al obtener alternativas:", error); // Handle errors
+    }
+  };
 
-    fetchAlternativas(); // Call the fetch function
-  }, [data][isModalOpen]);
+  useEffect(() => {
+    fetchAlternativas();
+    console.log("numero de  filas ", filas);
+  }, []);
+  // Handler para ejecutar agregarPersona_profesor y mostrar el estado
+  const handleAgregarProfesor = async () => {
+    try {
+      // Primero obtenemos el número de filas actual
+      await fetchFilas();
 
-  //--------------------------------------
-  const [preguntas, setPreguntas] = useState([]);
-  const [alternativas, setAlternativas] = useState({});
-  const [aceptaTerminos, setAceptaTerminos] = useState(false);
-  const [isQuizStarted, setIsQuizStarted] = useState(false);
+      // Calculamos el nuevo idpersona
+      const nuevoIdPersona = parseInt(filas);
+      console.log(nuevoIdPersona);
 
-  // Estados para mensajes de error y éxito
-  const [startQuizError, setStartQuizError] = useState("");
-  const [checkboxError, setCheckboxError] = useState("");
-  const [numberError, setNumberError] = useState(""); // Nuevo estado para errores de número
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+      // Llamamos a la función para agregar un profesor
+      await agregarPersona_(nuevoIdPersona + 1, resultados);
 
-  // Estado para manejo de carga y errores de carga
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadError, setLoadError] = useState("");
+      // Luego vinculamos al profesor como educadorc
 
-  // Estado para manejo de envío
-  const [isSubmitting, setIsSubmitting] = useState(false);
+      await agregarPersona_educador(nuevoIdPersona + 1, resultados);
 
-  // Valores constantes para el rango de edades
-  const MIN_NUMBER = 18;
-  const MAX_NUMBER = 80;
+      await agregarRespuestaParaProfesor(nuevoIdPersona + 1, resultados);
+
+      // Actualizamos el estado con un mensaje de éxito
+      setStatusMessage(
+        `Profesor y educador agregados con éxito: ID ${nuevoIdPersona}`
+      );
+    } catch (error) {
+      // Manejamos cualquier error
+      setStatusMessage(`Error al agregar profesor: ${error.message}`);
+    }
+  };
 
   // Cargar preguntas y alternativas desde el backend
   useEffect(() => {
