@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { FormContext } from "../context/FormContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { textoFinal } from "../context/funcionesCuestionario/crearPrompt";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import logo from "../assets/logo.svg";
 
 import ballena from "./funcionesPrueba/imagenes/Ilustración-cetaceo.svg";
 import nutria from "./funcionesPrueba/imagenes/tración-mustelido.svg";
@@ -326,10 +328,49 @@ const CuestionarioPage = () => {
   };
 
   const handleNextQuestion = () => {
+    const pregunta = preguntas[currentQuestionIndex];
+    const respuesta = userData[pregunta?.idPregunta];
+  
+    // Permitir avanzar si la pregunta no requiere respuesta
+    const preguntasSinRespuesta = [9, 23, 29, 48, 52]; // IDs de preguntas que no requieren respuesta
+    if (preguntasSinRespuesta.includes(pregunta?.idPregunta)) {
+      setSubmitError(""); // Limpiar el mensaje de error si existía
+      if (currentQuestionIndex < preguntas.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      }
+      return;
+    }
+  
+    // Lógica específica para la pregunta 19 que afecta la pregunta 20
+    if (pregunta?.idPregunta === 19) {
+      if (respuesta === 47) { // Si la respuesta es idAlternativa 47
+        const siguientePregunta = preguntas[currentQuestionIndex + 1];
+        if (siguientePregunta?.idPregunta === 20) {
+          setUserData((prevUserData) => ({
+            ...prevUserData,
+            [siguientePregunta.idPregunta]: null, // Limpiar cualquier respuesta previa de la pregunta 20
+          }));
+          setSubmitError(""); // Limpiar mensaje de error
+          setCurrentQuestionIndex(currentQuestionIndex + 2); // Saltar a la pregunta 21
+          return;
+        }
+      }
+    }
+  
+    // Validar si hay respuesta para la pregunta actual
+    if (!respuesta || (Array.isArray(respuesta) && respuesta.length === 0)) {
+      setSubmitError("Por favor, responde la pregunta antes de continuar.");
+      return;
+    }
+  
+    // Limpiar el mensaje de error y avanzar a la siguiente pregunta
+    setSubmitError("");
     if (currentQuestionIndex < preguntas.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
+  
+  
 
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
@@ -457,7 +498,7 @@ const CuestionarioPage = () => {
 
     return (
       <div className="w-full transition-opacity duration-300 ease-in-out">
-        <h2 className="text-xl text-center sm:text-2xl font-semibold mb-4 text-Moonstone">
+        <h2 className="text-xl text-center sm:text-2xl font-semibold mb-4 text-YankeesBlue">
           {pregunta.textoPregunta}
         </h2>
 
@@ -704,12 +745,19 @@ const CuestionarioPage = () => {
 
   ////////////////////// FUNCIONES BCV///////////////////////
   return (
-    <div className="flex flex-col w-screen h-screen bg-pulpo-pattern bg-YankeesBlue bg-cover bg-center bg-no-repeat p-0">
-      <div className="flex justify-start mb-4">
-        <Link to="/">
-          <button className="bg-Moonstone rounded-md text-white font-semibold py-2 m-1 px-6 sm:py-3 sm:px-8 shadow-md transition-transform duration-200 ease-in-out transform hover:scale-105">
-            Volver a Inicio
-          </button>
+    <div className="flex flex-col w-screen h-screen bg-pulpo-pattern bg-gray-200 bg-cover bg-center bg-no-repeat p-0">
+      {/* Botón "Volver a Inicio" */}
+      <div className="absolute top-4 left-4">
+        <Link
+          to="/"
+          className="flex items-center bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-MoonstoneDark transition duration-300"
+        >
+          <img
+            src={logo}
+            alt="Logo del Proyecto"
+            className="h-8 w-auto mr-2"
+          />
+          <ArrowBackIcon className="h-6 w-6" />
         </Link>
       </div>
 
@@ -727,7 +775,7 @@ const CuestionarioPage = () => {
           <>
             {!isQuizStarted ? (
               <div className="flex flex-col items-center justify-center bg-white p-6 sm:p-8 shadow-xl rounded-xl max-w-md sm:max-w-lg md:max-w-xl w-full transition-opacity duration-500 ease-in-out">
-                <h3 className="font-bold text-xl sm:text-2xl text-center mb-4 text-Moonstone">
+                <h3 className="font-bold text-xl sm:text-2xl text-center mb-4 text-YankeesBlue">
                   Términos y Condiciones
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm text-center mb-4">
@@ -766,7 +814,7 @@ const CuestionarioPage = () => {
                 </label>
                 <button
                   onClick={handleStartQuiz}
-                  className="bg-Moonstone rounded-md text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
+                  className="bg-YankeesBlue rounded-md text-white font-semibold py-2 px-4 sm:py-3 sm:px-6 w-full transition-transform duration-200 ease-in-out transform hover:scale-105"
                 >
                   Iniciar Cuestionario
                 </button>
@@ -781,7 +829,7 @@ const CuestionarioPage = () => {
 
                     {/* Botón para descargar los datos como archivo .txt */}
                     <button
-                      className="mt-4 px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 ease-in-out"
+                      className="mt-4 px-4 py-2 bg-YankeesBlue text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-200 ease-in-out"
                       onClick={toggleModal}
                     >
                       Ver leyenda
@@ -826,7 +874,9 @@ const CuestionarioPage = () => {
                                     className="max-w-full h-auto rounded-lg shadow-md"
                                   />
                                 )}
+                                
                               </div>
+                              
                             </div>
                           )}
 
@@ -861,10 +911,10 @@ const CuestionarioPage = () => {
                         <button
                           onClick={handleNextQuestion}
                           disabled={hasError}
-                          className={`bg-Moonstone text-white py-2 px-4 sm:py-3 sm:px-6 rounded-md transition-transform duration-200 ease-in-out transform ${
+                          className={`bg-YankeesBlue text-white py-2 px-4 sm:py-3 sm:px-6 rounded-md transition-transform duration-200 ease-in-out transform ${
                             hasError
-                              ? "bg-Moonstone cursor-not-allowed"
-                              : "hover:bg-Moonstone hover:scale-105"
+                              ? "bg-YankeesBlue cursor-not-allowed"
+                              : "hover:bg-YankeesBlue hover:scale-105"
                           }`}
                         >
                           Siguiente
@@ -892,7 +942,7 @@ const CuestionarioPage = () => {
       </div>
 
       {/* Footer */}
-      <div className="mt-4 px-4 bg-Moonstone">
+      <div className="mt-4 px-4 bg-YankeesBlue">
         <p className="text-xs text-center sm:text-sm text-white p-2 rounded">
           La duración del cuestionario es de 20 minutos aproximadamente.
         </p>

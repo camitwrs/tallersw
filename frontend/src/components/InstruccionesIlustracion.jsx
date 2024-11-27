@@ -2,19 +2,14 @@ import React, { useState } from "react";
 import FileUploadModal from "../components/SubirArchivoButton";
 
 const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado del modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Maneja la apertura del modal
   const handleOpenModal = () => setIsModalOpen(true);
-
-  // Maneja el cierre del modal
   const handleCloseModal = () => setIsModalOpen(false);
-
-  // Maneja la subida del archivo
   const handleFileUpload = (file) => {
-    console.log("Archivo recibido:", file); // Debug del archivo subido
+    console.log("Archivo recibido:", file);
     alert(`Archivo "${file.name}" subido exitosamente.`);
-    setIsModalOpen(false); // Cierra el modal
+    setIsModalOpen(false);
   };
 
   if (!ilustracion) {
@@ -25,7 +20,7 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
         </p>
         <button
           onClick={onBack}
-          className="bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-YankeesBlueDark transition duration-300 mt-4"
+          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300 mt-4"
         >
           Regresar
         </button>
@@ -35,15 +30,20 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
 
   return (
     <div className="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">
-        Instrucciones de la Ilustración
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Detalles de la Ilustración</h2>
       <div className="mb-4">
         <p>
-          <strong>Nombre:</strong> {ilustracion.nombre}
+          <strong>Título:</strong> {ilustracion.titulo}
         </p>
         <p>
-          <strong>Proyecto:</strong> {ilustracion.proyecto}
+          <strong>Prompt:</strong> {ilustracion.prompt}
+        </p>
+        <p>
+          <strong>Proyecto:</strong> {ilustracion.idDisenador}
+        </p>
+        <p>
+          <strong>Fecha de Entrega:</strong>{" "}
+          {new Date(ilustracion.fechaentrega).toLocaleDateString()}
         </p>
         <p>
           <strong>Estado:</strong>{" "}
@@ -58,36 +58,30 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
           </span>
         </p>
       </div>
-      <div className="mb-4">
-        <p>
-          <strong>Descripción:</strong>{" "}
-          {ilustracion.descripcion || "Sin descripción."}
-        </p>
-      </div>
-      {ilustracion.fechaLimite && (
+      {ilustracion.imagen && (
         <div className="mb-4">
-          <p>
-            <strong>Fecha Límite:</strong>{" "}
-            {new Date(ilustracion.fechaLimite).toLocaleDateString()}
-          </p>
+          <img
+            src={ilustracion.imagen}
+            alt={ilustracion.titulo}
+            className="w-full h-auto rounded-lg"
+          />
         </div>
       )}
       <div className="flex gap-4">
         <button
           onClick={onBack}
-          className="bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-YankeesBlueDark transition duration-300"
+          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
         >
           Regresar
         </button>
         <button
           onClick={handleOpenModal}
-          className="bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-YankeesBlueDark transition duration-300"
+          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
         >
           Subir Archivo
         </button>
       </div>
 
-      {/* Modal para subir archivo */}
       {isModalOpen && (
         <FileUploadModal
           isOpen={isModalOpen}

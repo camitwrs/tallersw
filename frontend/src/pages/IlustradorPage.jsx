@@ -4,54 +4,221 @@ import ListaIlustraciones from "../components/ListaIlustraciones";
 import InstruccionesIlustracion from "../components/InstruccionesIlustracion";
 
 const IlustradorPage = () => {
-  const [view, setView] = useState("list"); // Alterna entre "list" y "details"
+  const [view, setView] = useState("list");
   const [selectedIlustracion, setSelectedIlustracion] = useState(null);
 
   const ilustraciones = [
     {
-      id: 1,
-      nombre: "Ilustración 1",
-      proyecto: "Proyecto A",
+      idIlustracion: 1,
+      idEducador: 101,
+      idDisenador: 201,
+      prompt: "Diseño minimalista",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 1",
+      fechaentrega: "2024-12-15",
       estado: "Pendiente",
-      descripcion:
-        "Esta ilustración debe incluir un diseño minimalista con tonos cálidos.",
-      fechaLimite: "2024-12-15",
     },
     {
-      id: 2,
-      nombre: "Ilustración 2",
-      proyecto: "Proyecto B",
-      estado: "Terminado",
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
     },
     {
-      id: 3,
-      nombre: "Ilustración 3",
-      proyecto: "Proyecto C",
-      estado: "Pendiente",
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
+    },
+    {
+      idIlustracion: 2,
+      idEducador: 102,
+      idDisenador: 202,
+      prompt: "Estilo abstracto",
+      imagen: "https://via.placeholder.com/300",
+      titulo: "Ilustración 2",
+      fechaentrega: "2024-12-20",
+      estado: "Aprobado",
     },
   ];
 
   const handleSelect = (id) => {
-    const ilustracion = ilustraciones.find((item) => item.id === id);
+    const ilustracion = ilustraciones.find((item) => item.idIlustracion === id);
     setSelectedIlustracion(ilustracion);
-    setView("details"); // Cambia a la vista de detalles
+    setView("details");
   };
 
   const handleBack = () => {
     setSelectedIlustracion(null);
-    setView("list"); // Regresa a la lista
+    setView("list");
   };
 
   return (
-    <div>
-      {/* Header */}
-      <header className="flex justify-between items-center p-4 bg-YankeesBlue text-white">
+    <div className="min-h-screen bg-gray-100">
+      <header className="flex justify-between items-center p-4 bg-YankeesBlue text-white shadow-md">
         <h1 className="text-xl font-bold">Ilustraciones Pendientes</h1>
         <LogoutButton />
       </header>
 
-      {/* Contenido Principal */}
-      <main>
+      <main className="max-w-7xl mx-auto py-6 px-4">
         {view === "list" && (
           <ListaIlustraciones
             ilustraciones={ilustraciones}

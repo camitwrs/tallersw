@@ -10,17 +10,20 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
     if (selectedFile) {
       // Valida el tipo y tamaño del archivo
       if (
-        !["image/png", "image/jpeg", "application/pdf"].includes(
-          selectedFile.type
-        )
+        ![
+          "image/png",
+          "image/jpeg",
+          "image/svg+xml",
+          "application/pdf",
+        ].includes(selectedFile.type)
       ) {
-        setError("Solo se permiten archivos PNG, JPEG o PDF.");
+        setError("Solo se permiten archivos PNG, JPEG, SVG o PDF.");
         setFile(null);
         return;
       }
-      if (selectedFile.size > 5 * 1024 * 1024) {
-        // 5 MB máximo
-        setError("El archivo no debe exceder los 5 MB.");
+      if (selectedFile.size > 20 * 1024 * 1024) {
+        // 20 MB máximo
+        setError("El archivo no debe exceder los 20 MB.");
         setFile(null);
         return;
       }
@@ -49,7 +52,7 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
         {/* Input para seleccionar el archivo */}
         <input
           type="file"
-          accept=".png, .jpeg, .jpg, .pdf"
+          accept=".png, .jpeg, .jpg, .svg, .pdf"
           onChange={handleFileChange}
           className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300"
         />
@@ -67,7 +70,7 @@ const FileUploadModal = ({ isOpen, onClose, onUpload }) => {
           </button>
           <button
             onClick={handleUpload}
-            className="bg-YankeesBlue text-white py-2 px-4 rounded hover:bg-YankeesBlueDark"
+            className="bg-blue-700 text-white py-2 px-4 rounded hover:bg-blue-800"
           >
             Subir
           </button>

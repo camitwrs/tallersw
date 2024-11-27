@@ -44,7 +44,7 @@ const HomePage = () => {
             >
               &gt;&gt; Haz el cuestionario aquí
             </Link>
-
+            {/* BOTÓN DE PRUEBAS COMENTADO
             <br></br>
             <Link
               to="/pruebas"
@@ -52,9 +52,9 @@ const HomePage = () => {
             >
               &gt;&gt; PRUEBAS
             </Link>
+            */}
           </div>
-
-          {/* Image Section */}
+          
           <div className="mt-8 lg:mt-0">
             <img
               src={prototipo}
