@@ -3,9 +3,17 @@ import { Link } from "react-router-dom";
 import { FormContext } from "../context/FormContext";
 import CircularProgress from "@mui/material/CircularProgress";
 import { textoFinal } from "../context/funcionesCuestionario/crearPrompt";
-import { agregarPersona_educador } from "../context/POST/POSTeducador";
-import { agregarPersona_ } from "../context/POST/POSTpersona";
-import { agregarRespuestaParaProfesor } from "../context/POST/POSTrespuestas";
+
+import ballena from "./funcionesPrueba/imagenes/Ilustración-cetaceo.svg";
+import nutria from "./funcionesPrueba/imagenes/tración-mustelido.svg";
+import orca from "./funcionesPrueba/imagenes/tración-orca.svg";
+import pingu from "./funcionesPrueba/imagenes/tración-pinguino.svg";
+import foca from "./funcionesPrueba/imagenes/tración-pinípedo.svg";
+import tortu from "./funcionesPrueba/imagenes/tración-tortuga.svg";
+
+// import { agregarPersona_educador } from "../context/POST/POSTeducador";
+// import { agregarPersona_ } from "../context/POST/POSTpersona";
+// import { agregarRespuestaParaProfesor } from "../context/POST/POSTrespuestas";
 
 const CuestionarioPage = () => {
   const {
@@ -20,7 +28,12 @@ const CuestionarioPage = () => {
   const [data, setData] = useState([]);
   const [resultados, setResultados] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [textos, setTextos] = useState({ originalText: "", fantasyText: "" });
+  const [textos, setTextos] = useState({
+    originalText: "",
+    fantasyText: "",
+    morphology: "",
+  });
+
   const [filas, setFilas] = useState(0);
   //--------------------------------------
   const [preguntas, setPreguntas] = useState([]);
@@ -45,6 +58,16 @@ const CuestionarioPage = () => {
   // Valores constantes para el rango de edades
   const MIN_NUMBER = 18;
   const MAX_NUMBER = 80;
+
+  const [isLoadingmodal, setIsLoadingmodal] = useState(true);
+
+  useEffect(() => {
+    if (textos && textos.originalText && textos.fantasyText) {
+      // Simular un retraso de carga para el ejemplo
+      const timeout = setTimeout(() => setIsLoadingmodal(false), 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [textos]);
 
   //const [universidadesPorPais, setUniversidadesPorPais] = useState({});
 
@@ -102,7 +125,7 @@ const CuestionarioPage = () => {
     if (!isModalOpen) {
       // Solo actualizar data cuando se abre el modal
       setData(finalData);
-      handleAgregarProfesor();
+      //  handleAgregarProfesor();
     }
   };
 
@@ -193,36 +216,35 @@ const CuestionarioPage = () => {
 
   useEffect(() => {
     fetchAlternativas();
-    console.log("numero de  filas ", filas);
-  }, []);
+  }, [data]);
   // Handler para ejecutar agregarPersona_profesor y mostrar el estado
-  const handleAgregarProfesor = async () => {
-    try {
-      // Primero obtenemos el número de filas actual
-      await fetchFilas();
+  // const handleAgregarProfesor = async () => {
+  //   try {
+  //     // Primero obtenemos el número de filas actual
+  //     await fetchFilas();
 
-      // Calculamos el nuevo idpersona
-      const nuevoIdPersona = parseInt(filas);
-      console.log(nuevoIdPersona);
+  //     // Calculamos el nuevo idpersona
+  //     const nuevoIdPersona = parseInt(filas);
+  //     console.log(nuevoIdPersona);
 
-      // Llamamos a la función para agregar un profesor
-      await agregarPersona_(nuevoIdPersona + 1, resultados);
+  //     // Llamamos a la función para agregar un profesor
+  //     await agregarPersona_(nuevoIdPersona + 1, resultados);
 
-      // Luego vinculamos al profesor como educadorc
+  //     // Luego vinculamos al profesor como educadorc
 
-      await agregarPersona_educador(nuevoIdPersona + 1, resultados);
+  //     await agregarPersona_educador(nuevoIdPersona + 1, resultados);
 
-      await agregarRespuestaParaProfesor(nuevoIdPersona + 1, resultados);
+  //     await agregarRespuestaParaProfesor(nuevoIdPersona + 1, resultados);
 
-      // Actualizamos el estado con un mensaje de éxito
-      setStatusMessage(
-        `Profesor y educador agregados con éxito: ID ${nuevoIdPersona}`
-      );
-    } catch (error) {
-      // Manejamos cualquier error
-      setStatusMessage(`Error al agregar profesor: ${error.message}`);
-    }
-  };
+  //     // Actualizamos el estado con un mensaje de éxito
+  //     setStatusMessage(
+  //       `Profesor y educador agregados con éxito: ID ${nuevoIdPersona}`
+  //     );
+  //   } catch (error) {
+  //     // Manejamos cualquier error
+  //     setStatusMessage(`Error al agregar profesor: ${error.message}`);
+  //   }
+  // };
 
   // Cargar preguntas y alternativas desde el backend
   useEffect(() => {
@@ -668,7 +690,19 @@ const CuestionarioPage = () => {
 
   // Determinar si hay un error en la pregunta actual
   const hasError = !!checkboxError || !!numberError || !!submitError;
+  ///////////////////    COMIENZO DE LA PAGINA////////////////////////
 
+  function buscargenero() {
+    if (textos.morphology == "Ballenas") return ballena;
+    if (textos.morphology == "Focas") return foca;
+    if (textos.morphology == "Tortuga marinas") return tortu;
+    if (textos.morphology == "Orcas") return orca;
+    if (textos.morphology == "Pingüinos") return pingu;
+    if (textos.morphology == "Nutrias") return nutria;
+    else return 0;
+  }
+
+  ////////////////////// FUNCIONES BCV///////////////////////
   return (
     <div className="flex flex-col w-screen h-screen bg-pulpo-pattern bg-YankeesBlue bg-cover bg-center bg-no-repeat p-0">
       <div className="flex justify-start mb-4">
@@ -759,31 +793,42 @@ const CuestionarioPage = () => {
                         <div className="bg-white rounded-lg p-6 w-3/4 md:w-2/3 relative max-h-screen overflow-y-auto">
                           <h3 className="text-lg font-bold mb-4">Leyenda</h3>
 
-                          {/* Renderiza los datos procesados */}
-                          {/* <h2 className="text-xl font-semibold mb-2">
-                            Descripción escrita:
-                          </h2> */}
+                          {isLoadingmodal ? (
+                            <div className="flex justify-center items-center">
+                              <div className="loader border-t-4 border-blue-500 border-solid rounded-full w-12 h-12 animate-spin"></div>
+                              <p className="ml-4 text-gray-600">
+                                Cargando datos...
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col md:flex-row gap-6">
+                              {/* Columna izquierda para el texto */}
+                              <div className="w-full md:w-1/2 p-4">
+                                <h2>Descripción escrita:</h2>
 
-                          {/* <h3 className="text-lg font-medium">
-                            Texto Original:
-                          </h3> */}
-                          {/* <pre className="whitespace-pre-wrap break-words overflow-auto bg-gray-100 p-4 rounded">
-        {originalText}
-      </pre> */}
+                                <h3>Texto Original:</h3>
+                                <pre className="whitespace-pre-wrap break-words overflow-auto">
+                                  {textos.originalText}
+                                </pre>
 
-                          <div className="w-1/2 p-4">
-                            <h2>Descripción escrita:</h2>
+                                <h3>Texto de Fantasía:</h3>
+                                <pre className="whitespace-pre-wrap break-words overflow-auto">
+                                  {textos.fantasyText}
+                                </pre>
+                              </div>
 
-                            <h3>Texto Original:</h3>
-                            <pre className="whitespace-pre-wrap break-words overflow-auto">
-                              {textos.originalText}
-                            </pre>
-
-                            <h3>Texto de Fantasía:</h3>
-                            <pre className="whitespace-pre-wrap break-words overflow-auto">
-                              {textos.fantasyText}
-                            </pre>
-                          </div>
+                              {/* Columna derecha para la imagen */}
+                              <div className="w-full md:w-1/2 p-4 flex items-center justify-center">
+                                {textos.morphology && (
+                                  <img
+                                    src={buscargenero()}
+                                    alt="Ilustración de morfología"
+                                    className="max-w-full h-auto rounded-lg shadow-md"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          )}
 
                           <button
                             className="absolute top-2 right-2 px-4 py-2 bg-red-600 text-white font-semibold rounded-md shadow-md hover:bg-red-700 transition duration-200 ease-in-out"

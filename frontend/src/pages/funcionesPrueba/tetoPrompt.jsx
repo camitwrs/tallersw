@@ -6,7 +6,7 @@ export const data = [
     4: 228, //pais
     5: 5, //Institución a la que pertenece
     6: 18, //Años en el cargo o de experiencia en cargos similares
-    7: 7, // ¿Cuál de las siguientes descripciones describe mejor tu rol o tu función?
+    7: 9, // ¿Cuál de las siguientes descripciones describe mejor tu rol o tu función?
     8: [13, 18],
     10: 21,
     11: 23,
@@ -142,7 +142,7 @@ export function textoFinal(resultados, cuadroB4 = "x") {
   function buscargenero() {
     if (morphology == "Ballenas") return "Cetaceus";
     if (morphology == "Focas") return "Phocidae";
-    if (morphology == "Tortugas marinas") return "Chelonioidea";
+    if (morphology == "Tortuga marinas") return "Chelonioidea";
     if (morphology == "Orcas") return "Orcinus orca";
     if (morphology == "Pingüinos") return "Spheniscidae";
     if (morphology == "Nutrias") return "Mustelidae";
@@ -160,5 +160,5 @@ export function textoFinal(resultados, cuadroB4 = "x") {
 `;
 
   // Return both versions as an object
-  return { originalText, fantasyText };
+  return { originalText, fantasyText, morphology };
 }

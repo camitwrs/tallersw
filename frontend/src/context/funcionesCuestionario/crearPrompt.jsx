@@ -87,7 +87,7 @@ export function textoFinal(resultados, cuadroB4 = "x") {
   function buscargenero() {
     if (morphology == "Ballenas") return "Cetaceus";
     if (morphology == "Focas") return "Phocidae";
-    if (morphology == "Tortugas marinas") return "Chelonioidea";
+    if (morphology == "Tortuga marinas") return "Chelonioidea";
     if (morphology == "Orcas") return "Orcinus orca";
     if (morphology == "Pingüinos") return "Spheniscidae";
     if (morphology == "Nutrias") return "Mustelidae";
@@ -105,5 +105,5 @@ export function textoFinal(resultados, cuadroB4 = "x") {
 `;
 
   // Return both versions as an object
-  return { originalText, fantasyText };
+  return { originalText, fantasyText, morphology };
 }

@@ -3,9 +3,21 @@ import { data, textoFinal } from "./funcionesPrueba/tetoPrompt";
 import { agregarPersona_profesor } from "./POST/POSTpersona";
 import { agregarPersona_educador } from "./POST/POSTeducador";
 import { agregarRespuestaParaProfesor } from "./POST/POSTrespuestas";
+import ballena from "./funcionesPrueba/imagenes/Ilustración-cetaceo.svg";
+import nutria from "./funcionesPrueba/imagenes/tración-mustelido.svg";
+import orca from "./funcionesPrueba/imagenes/tración-orca.svg";
+import pingu from "./funcionesPrueba/imagenes/tración-pinguino.svg";
+import foca from "./funcionesPrueba/imagenes/tración-pinípedo.svg";
+import tortu from "./funcionesPrueba/imagenes/tración-tortuga.svg";
+
 function Pruebas() {
   const [resultados, setResultados] = useState([]);
-  const [textos, setTextos] = useState({ originalText: "", fantasyText: "" });
+  const [textos, setTextos] = useState({
+    originalText: "",
+    fantasyText: "",
+    morphology: "",
+  });
+
   const [statusMessage, setStatusMessage] = useState(""); // Estado para el mensaje de estado
 
   const [filas, setFilas] = useState(0);
@@ -129,6 +141,16 @@ function Pruebas() {
     }
   };
 
+  function buscargenero() {
+    if (textos.morphology == "Ballenas") return ballena;
+    if (textos.morphology == "Focas") return foca;
+    if (textos.morphology == "Tortuga marinas") return tortu;
+    if (textos.morphology == "Orcas") return orca;
+    if (textos.morphology == "Pingüinos") return pingu;
+    if (textos.morphology == "Nutrias") return nutria;
+    else return 0;
+  }
+
   return (
     <div className="flex">
       {/* Resultados Procesados Table */}
@@ -165,6 +187,11 @@ function Pruebas() {
         <pre className="whitespace-pre-wrap break-words overflow-auto">
           {textos.fantasyText}
         </pre>
+        <div>
+          {textos.morphology && (
+            <img src={buscargenero()} alt={`Ilustración de `} />
+          )}
+        </div>
 
         {/* Botón para agregar profesor */}
         <button
