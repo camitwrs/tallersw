@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -10,6 +10,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
+  const [loginError, setLoginError] = useState(""); // Nuevo estado para manejar errores de inicio de sesión
+  const navigate = useNavigate(); // Hook para redirigir al usuario
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -31,6 +33,18 @@ const LoginPage = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault(); // Evitar el comportamiento por defecto del formulario
+
+    // Validar las credenciales
+    if (email === "art@art.com" && password === "art") {
+      setLoginError(""); // Limpiar errores previos
+      navigate("/ilustrador"); // Redirigir a la página /ilustrador
+    } else {
+      setLoginError("Credenciales incorrectas. Intenta nuevamente."); // Mostrar error
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300 px-4">
       {/* Encabezado responsive */}
@@ -39,11 +53,7 @@ const LoginPage = () => {
           to="/"
           className="flex items-center bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-YankeesBlueDark transition duration-300"
         >
-          <img
-            src={logo}
-            alt="Logo del Proyecto"
-            className="h-8 w-auto mr-2"
-          />
+          <img src={logo} alt="Logo del Proyecto" className="h-8 w-auto mr-2" />
           <ArrowBackIcon className="h-6 w-6" />
         </Link>
       </header>
@@ -54,7 +64,10 @@ const LoginPage = () => {
       </h1>
 
       {/* Formulario responsive */}
-      <form className="bg-white shadow-md rounded px-6 sm:px-8 md:px-12 pt-6 pb-8 w-full max-w-sm sm:max-w-md lg:max-w-lg">
+      <form
+        className="bg-white shadow-md rounded px-6 sm:px-8 md:px-12 pt-6 pb-8 w-full max-w-sm sm:max-w-md lg:max-w-lg"
+        onSubmit={handleLogin} // Llamar a la función handleLogin al enviar el formulario
+      >
         {/* Campo de correo */}
         <div className="mb-4">
           <label
@@ -74,9 +87,7 @@ const LoginPage = () => {
             onChange={handleEmailChange}
           />
           {emailError && (
-            <p className="text-red-500 text-xs sm:text-sm mt-2">
-              {emailError}
-            </p>
+            <p className="text-red-500 text-xs sm:text-sm mt-2">{emailError}</p>
           )}
         </div>
 
@@ -111,14 +122,21 @@ const LoginPage = () => {
           </div>
         </div>
 
+        {/* Mostrar error de inicio de sesión */}
+        {loginError && (
+          <p className="text-red-500 text-xs sm:text-sm mb-4 text-center">
+            {loginError}
+          </p>
+        )}
+
         {/* Botón de inicio de sesión */}
         <div className="flex justify-center">
-          <Link
-            to="/ilustrador"
+          <button
+            type="submit"
             className="w-full text-center bg-YankeesBlue text-white font-bold py-2 sm:py-3 px-4 rounded focus:outline-none focus:shadow-outline hover:bg-YankeesBlueDark transition duration-300"
           >
             Iniciar Sesión
-          </Link>
+          </button>
         </div>
       </form>
     </div>

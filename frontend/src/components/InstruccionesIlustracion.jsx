@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import FileUploadModal from "../components/SubirArchivoButton";
+import prototipoImage from "../assets/prototipo.png"; // Asegúrate de usar la ruta correcta para la imagen
 
 const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,13 +15,13 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
 
   if (!ilustracion) {
     return (
-      <div className="text-center mt-8">
-        <p className="text-gray-600">
+      <div className="text-center mt-4">
+        <p className="text-gray-600 text-sm">
           No se ha seleccionado ninguna ilustración.
         </p>
         <button
           onClick={onBack}
-          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300 mt-4"
+          className="bg-blue-600 text-white font-bold py-1 px-3 rounded hover:bg-blue-700 transition duration-300 mt-2 text-sm"
         >
           Regresar
         </button>
@@ -29,9 +30,9 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Detalles de la Ilustración</h2>
-      <div className="mb-4">
+    <div className="max-w-3xl mx-auto mt-4 p-4 bg-white shadow-md rounded-lg text-sm">
+      <h2 className="text-xl font-bold mb-2">Detalles de la Ilustración</h2>
+      <div className="mb-2">
         <p>
           <strong>Título:</strong> {ilustracion.titulo}
         </p>
@@ -58,25 +59,38 @@ const InstruccionesIlustracion = ({ ilustracion, onBack }) => {
           </span>
         </p>
       </div>
-      {ilustracion.imagen && (
-        <div className="mb-4">
+
+      {/* Mostrar imagen cuando el estado sea "Aprobado" */}
+      {ilustracion.estado === "Aprobado" && (
+        <div className="mb-2 flex justify-center">
           <img
-            src={ilustracion.imagen}
-            alt={ilustracion.titulo}
-            className="w-full h-auto rounded-lg"
+            src={prototipoImage}
+            alt="Prototipo Aprobado"
+            className="w-[350px] h-auto rounded-lg" // Cambiado tamaño a 150px de ancho
           />
         </div>
       )}
-      <div className="flex gap-4">
+
+      {ilustracion.imagen && ilustracion.estado !== "Aprobado" && (
+        <div className="mb-2 flex justify-center">
+          <img
+            src={ilustracion.imagen}
+            alt={ilustracion.titulo}
+            className="w-[350px] h-auto rounded-lg" // Cambiado tamaño a 150px de ancho
+          />
+        </div>
+      )}
+
+      <div className="flex gap-2 justify-between">
         <button
           onClick={onBack}
-          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
+          className="bg-blue-600 text-white font-bold py-1 px-3 rounded hover:bg-blue-700 transition duration-300 text-sm"
         >
           Regresar
         </button>
         <button
           onClick={handleOpenModal}
-          className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-800 transition duration-300"
+          className="bg-blue-600 text-white font-bold py-1 px-3 rounded hover:bg-blue-700 transition duration-300 text-sm"
         >
           Subir Archivo
         </button>

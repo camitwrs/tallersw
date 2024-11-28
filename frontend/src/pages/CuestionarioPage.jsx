@@ -330,7 +330,7 @@ const CuestionarioPage = () => {
   const handleNextQuestion = () => {
     const pregunta = preguntas[currentQuestionIndex];
     const respuesta = userData[pregunta?.idPregunta];
-  
+
     // Permitir avanzar si la pregunta no requiere respuesta
     const preguntasSinRespuesta = [9, 23, 29, 48, 52]; // IDs de preguntas que no requieren respuesta
     if (preguntasSinRespuesta.includes(pregunta?.idPregunta)) {
@@ -340,10 +340,11 @@ const CuestionarioPage = () => {
       }
       return;
     }
-  
+
     // Lógica específica para la pregunta 19 que afecta la pregunta 20
     if (pregunta?.idPregunta === 19) {
-      if (respuesta === 47) { // Si la respuesta es idAlternativa 47
+      if (respuesta === 47) {
+        // Si la respuesta es idAlternativa 47
         const siguientePregunta = preguntas[currentQuestionIndex + 1];
         if (siguientePregunta?.idPregunta === 20) {
           setUserData((prevUserData) => ({
@@ -356,21 +357,19 @@ const CuestionarioPage = () => {
         }
       }
     }
-  
+
     // Validar si hay respuesta para la pregunta actual
     if (!respuesta || (Array.isArray(respuesta) && respuesta.length === 0)) {
       setSubmitError("Por favor, responde la pregunta antes de continuar.");
       return;
     }
-  
+
     // Limpiar el mensaje de error y avanzar a la siguiente pregunta
     setSubmitError("");
     if (currentQuestionIndex < preguntas.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
-  
-  
 
   const handlePrevQuestion = () => {
     if (currentQuestionIndex > 0) {
@@ -752,11 +751,7 @@ const CuestionarioPage = () => {
           to="/"
           className="flex items-center bg-YankeesBlue text-white font-bold py-2 px-4 rounded hover:bg-MoonstoneDark transition duration-300"
         >
-          <img
-            src={logo}
-            alt="Logo del Proyecto"
-            className="h-8 w-auto mr-2"
-          />
+          <img src={logo} alt="Logo del Proyecto" className="h-8 w-auto mr-2" />
           <ArrowBackIcon className="h-6 w-6" />
         </Link>
       </div>
@@ -859,10 +854,10 @@ const CuestionarioPage = () => {
                                   {textos.originalText}
                                 </pre>
 
-                                <h3>Texto de Fantasía:</h3>
+                                {/* <h3>Texto de Fantasía:</h3>
                                 <pre className="whitespace-pre-wrap break-words overflow-auto">
                                   {textos.fantasyText}
-                                </pre>
+                                </pre> */}
                               </div>
 
                               {/* Columna derecha para la imagen */}
@@ -874,9 +869,7 @@ const CuestionarioPage = () => {
                                     className="max-w-full h-auto rounded-lg shadow-md"
                                   />
                                 )}
-                                
                               </div>
-                              
                             </div>
                           )}
 
